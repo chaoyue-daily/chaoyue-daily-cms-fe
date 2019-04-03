@@ -11,12 +11,12 @@ class DataOverview extends Component {
       },
       {
         icon: require('./images/icon2.png'),
-        title: '昨日粉丝数',
-        total: '80',
+        title: '昨日访问量',
+        total: '8000',
       },
       {
         icon: require('./images/icon3.png'),
-        title: '昨日活跃粉丝数',
+        title: '昨日活跃用户数',
         total: '89万',
         yestodayTrend: 'increase',
         yestodayNumber: '700',
@@ -26,21 +26,6 @@ class DataOverview extends Component {
       {
         icon: require('./images/icon4.png'),
         title: '累计内容发布数',
-        total: '20',
-      },
-      {
-        icon: require('./images/icon5.png'),
-        title: '内容健康度',
-        total: '20',
-      },
-      {
-        icon: require('./images/icon6.png'),
-        title: '内容质量分',
-        total: '20',
-      },
-      {
-        icon: require('./images/icon7.png'),
-        title: '微淘号达人指数',
         total: '20',
       },
     ],

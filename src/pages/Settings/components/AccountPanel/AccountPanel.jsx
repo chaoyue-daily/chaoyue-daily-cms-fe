@@ -40,11 +40,11 @@ export default class AccountPanel extends Component {
         </div>
         <div style={styles.infoRow}>
           <div style={styles.infoLabel}>账号类型</div>
-          <div style={styles.infoDetail}>微淘号·商家</div>
+          <div style={styles.infoDetail}>管理员</div>
         </div>
         <div style={styles.infoRow}>
           <div style={styles.infoLabel}>账号名称</div>
-          <div style={styles.infoDetail}>好名字都起不到啦</div>
+          <div style={styles.infoDetail}>Admin</div>
         </div>
         <div style={styles.infoRow}>
           <div style={styles.infoLabel}>账号头像</div>

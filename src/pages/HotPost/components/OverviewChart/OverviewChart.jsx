@@ -29,11 +29,6 @@ export default class OverviewChart extends Component {
             </IceContainer>
           </Col>
           <Col xxs="24" s="8" l="8">
-            <IceContainer title="曝光量">
-              <BarChart />
-            </IceContainer>
-          </Col>
-          <Col xxs="24" s="8" l="8">
             <IceContainer title="访问量">
               <LineChart />
             </IceContainer>

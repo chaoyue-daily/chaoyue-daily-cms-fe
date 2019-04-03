@@ -37,7 +37,7 @@ export default class HotRank extends Component {
       <Container>
         <div style={styles.header}>
           <h3 style={{ fontSize: 16, color: '#333', margin: 0 }}>
-            粉丝热门关注点
+            用户热门关注点
           </h3>
           <span style={{ fontSize: 12, color: '#999' }}>
             每日计算分析近期粉丝行为，从而得出专注领域下粉丝热点综合指数排行

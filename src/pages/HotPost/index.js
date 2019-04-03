@@ -16,7 +16,7 @@ export default class HotPost extends Component {
       <div>
         <OverviewChart />
         <HotPostRank />
-        <HotRank />
+        {/* <HotRank /> */}
       </div>
     );
   }

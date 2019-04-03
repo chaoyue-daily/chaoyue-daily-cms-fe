@@ -11,10 +11,10 @@ function mockData(page = 1) {
     return {
       index: i + 1 + (page - 1) * 15,
       keyword: [
-        '情人节礼物 送女友',
-        '感动男朋友的礼物',
-        '不规则卫衣女',
-        '秋装新款女外套',
+        '参加新剧拍摄',
+        '上综艺节目',
+        '出席广告活动',
+        '发布新歌曲',
       ][i % 4],
       total: 150 * (15 - i),
       percent: 100 - i * 2.8,
@@ -38,10 +38,10 @@ export default class HotPostRank extends Component {
       <Container>
         <div style={styles.header}>
           <h3 style={{ fontSize: 16, color: '#333', margin: 0 }}>
-            粉丝最新关注点
+            用户最新关注点
           </h3>
           <span style={{ fontSize: 12, color: '#999' }}>
-            每日计算分析产出粉丝近期最新关注点
+            每日计算分析产出用户近期最新关注点
           </span>
         </div>
 

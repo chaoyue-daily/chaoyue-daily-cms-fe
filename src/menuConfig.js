@@ -55,10 +55,6 @@ const asideMenuConfig = [
     path: '/account',
     children: [
       {
-        name: '我的主页',
-        path: '/account/my',
-      },
-      {
         name: '设置',
         path: '/account/settings',
       },

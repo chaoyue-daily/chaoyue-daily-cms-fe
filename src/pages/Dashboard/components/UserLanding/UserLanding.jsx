@@ -47,12 +47,12 @@ class UserLanding extends Component {
             <div className={styles.userInfo}>
               <div className={styles.userDetail}>
                 <a href="#">
-                  <span className={styles.userName}>桥下小猫2</span>
+                  <span className={styles.userName}>Admin</span>
                 </a>
-                <div className={styles.userLabel}>官方账号</div>
+                {/* <div className={styles.userLabel}>官方账号</div> */}
               </div>
-              <div className={styles.userOther}>绑定机构：阿里巴巴飞冰团队</div>
-              <div className={styles.userOther}>认证信息：hello 大家好！</div>
+              {/* <div className={styles.userOther}>绑定机构：阿里巴巴飞冰团队</div> */}
+              {/* <div className={styles.userOther}>认证信息：hello 大家好！</div> */}
             </div>
             <div className={styles.userAttribute}>
               <div className={styles.userLevelWrapper}>
@@ -91,9 +91,9 @@ class UserLanding extends Component {
                 borderBottom: '1px solid #f6f6f6',
               }}
             >
-              <div>订阅号留言</div>
+              {/* <div>订阅号留言</div> */}
               <div>
-                V任务 <span>(0)</span>
+                {/* V任务 <span>(0)</span> */}
               </div>
             </div>
             <div style={{ paddingTop: 10, textAlign: 'center' }}>

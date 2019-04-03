@@ -10,19 +10,16 @@ function random(min, max) {
 function mockCentent() {
   return Array.from({ length: 2 + Math.round(Math.random() * 5) }).map(() => {
     return {
+      id: Math.random(),
       title: ['穿搭日记', '流行指南', '美发心得', '场景搭配'][random(0, 3)],
       cover:
         'https://img.alicdn.com/tfs/TB1sbkkXmBYBeNjy0FeXXbnmFXa-280-498.png',
       url: '#',
       detail: [
         {
-          label: '文章描述',
+          label: '文章简要',
           desc:
             '分享日常的真人穿搭或专业的教程，对时尚有自己的理解，能够给消费者提供时尚搭配心得',
-        },
-        {
-          label: '创作指导',
-          desc: '<a href="#">好的长文章应该怎么写？</a>',
         },
       ],
     };
@@ -31,48 +28,30 @@ function mockCentent() {
 
 @withRouter
 export default class PostCategory extends Component {
-  handleNewPost = () => {
-    this.props.history.push('/post/new');
+  handleNewPost = (id) => {
+    this.props.history.push(`/post/new/${id}`);
   };
 
   render() {
     const tabs = [
       {
-        title: '帖子',
+        title: '新闻',
         icon: require('./images/post.png'),
-        key: 'home',
+        key: 'news',
         content: mockCentent(),
       },
       {
-        title: '短视频',
-        icon: require('./images/video.png'),
-        key: 'doc',
-        content: mockCentent(),
-      },
-      {
-        title: '搭配',
-        icon: require('./images/collect.png'),
-        key: 'collect',
-        content: mockCentent(),
-      },
-      {
-        title: '单品',
-        icon: require('./images/item.png'),
-        key: 'item',
-        content: mockCentent(),
-      },
-      {
-        title: '问答',
-        icon: require('./images/ask.png'),
-        key: 'ask',
-        content: mockCentent(),
-      },
-      {
-        title: '转发',
+        title: '活动',
         icon: require('./images/fiy.png'),
-        key: 'fiy',
+        key: 'activity',
         content: mockCentent(),
       },
+      {
+        title: '投稿',
+        icon: require('./images/video.png'),
+        key: 'contribute',
+        content: mockCentent(),
+      }
     ];
 
     return (
@@ -87,9 +66,6 @@ export default class PostCategory extends Component {
             }}
           >
             文章列表
-          </span>
-          <span style={{ fontSize: 12, color: '#999' }}>
-            内容质量与粉丝效果好的文章可以得到更多频道曝光?
           </span>
         </div>
         <Tab
@@ -147,9 +123,9 @@ export default class PostCategory extends Component {
                           })}
                           <Button
                             className={styles.blockBtn}
-                            onClick={this.handleNewPost}
+                            onClick={()=>this.handleNewPost(item.id)}
                           >
-                            立即创作
+                            修改文章
                           </Button>
                         </div>
                       </div>

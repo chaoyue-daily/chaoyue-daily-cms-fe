@@ -5,10 +5,9 @@ import fecha from 'fecha';
 import { Pagination } from '@alifd/next';
 
 const mokeDataTitle = [
-  '【内容分类】获得更多曝光量！',
-  '【活动入口已开启】2018造物节-达人图文内容招稿说明',
-  '【微淘达人训练营第3期】L1&L2等级达人看过来，福利继续喽！',
-  '【爆文创作挑战开启】6月爆文红榜美妆篇 ，五步掌握爆款技巧',
+  '【今日新闻未更新】请及时撰写本日新闻。',
+  '【应援活动已开启】请帮助提高曝光量。',
+  '【原创作品已提交】请审核作品内容。',
 ];
 
 class NoticeList extends Component {

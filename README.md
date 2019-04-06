@@ -1,5 +1,3 @@
-# ice-creator-admin
-
 ## 使用
 
 - 启动调试服务: `npm start`
@@ -15,7 +13,3 @@
 - 布局文件: `src/layouts`
 - 通用组件: `src/components`
 - 页面文件: `src/pages`
-
-## 效果图
-
-![screenshot](https://img.alicdn.com/tfs/TB1zynrDHvpK1RjSZFqXXcXUVXa-2860-1580.png)

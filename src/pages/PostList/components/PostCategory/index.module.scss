@@ -12,6 +12,7 @@
   line-height: 60px;
 }
 .postCategoryList {
+  padding: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -34,6 +35,7 @@
   position: relative;
 }
 .blockTitle {
+  margin-top: 8px;
   padding: 6px 0;
   font-size: $font-size-subhead;
 }
@@ -51,10 +53,9 @@
   line-height: 22px;
 }
 .blockBtn {
-  right: 10px;
   color: #fff;
   bottom: 10px;
-  position: absolute;
+  margin-right: 12px;
   background: #5e83fb;
   border-radius: 3px;
 }

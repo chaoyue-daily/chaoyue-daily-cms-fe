@@ -33,6 +33,10 @@ const routerConfig = [
     component: NewPost,
   },
   {
+    path: '/post/update',
+    component: NewPost,
+  },
+  {
     path: '/post/analysis',
     component: HotPost,
   },

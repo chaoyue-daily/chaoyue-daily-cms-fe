@@ -7,7 +7,6 @@ import {
   Select,
   DatePicker,
   Radio,
-  Message,
   Upload,
 } from '@alifd/next';
 import {
@@ -15,6 +14,7 @@ import {
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
+import Notification from '@icedesign/notification';
 import { withRouter } from 'react-router-dom';
 import './index.scss'
 import 'braft-editor/dist/index.css'
@@ -22,7 +22,7 @@ import BraftEditor from 'braft-editor'
 import { ContentUtils } from 'braft-utils'
 import 'cropperjs/dist/cropper.css';
 import Cropper from 'react-cropper';
-
+import { getArticleById, addArticle, updateArticle } from '../../../../api/article';
 const { Option } = Select;
 
 @withRouter
@@ -36,18 +36,9 @@ export default class NewPostForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      pendingUploadImage: '',
       value: {
-        status: 'pending',
-        editorState: BraftEditor.createEditorState(),
-        pendingUploadImage: '',
-        cover: [{
-          uid: '0',
-          name: 'IMG.png',
-          state: 'done',
-          url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-          downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-          imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-        }],
+        content: BraftEditor.createEditorState(),
       },
     };
     this.handleContentChange = this.handleContentChange.bind(this);
@@ -55,8 +46,20 @@ export default class NewPostForm extends Component {
     this.handleFileUpload = this.handleFileUpload.bind(this);
   }
 
+  componentDidMount() {
+    let isUpdate = this.props.location.pathname.includes("update");
+    if(isUpdate){
+      let id = this.props.location.pathname.split("/").pop();
+      getArticleById(id).then(data => {
+        data.content = BraftEditor.createEditorState(data.content);
+        this.setState({value:data});
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+  }
+
   formChange = (value) => {
-    console.log('value', value);
     this.setState({
       value,
     });
@@ -65,16 +68,25 @@ export default class NewPostForm extends Component {
   validateAllFormField = () => {
     this.refs.form.validateAll((errors, values) => {
       if (errors) {
-        console.log({ errors });
+        Notification.error('请修正数据');
+        return;
       }
-      console.log({ values });
-      Message.success('提交成功');
-      this.props.history.push('/post/list');
+
+      let isUpdate = this.props.location.pathname.includes("update");
+      this.state.value.image_url = "test";
+      this.state.value.content = this.state.value.content.toHTML();
+      let request = isUpdate ? updateArticle(this.state.value) : addArticle(this.state.value);
+      request.then(data => {
+          Notification.info(isUpdate ? '修改成功！' : '创建成功');
+          this.props.history.push('/post/list');
+        }).catch((error) => {
+          console.log(error)
+        })
     });
   };
 
-  handleContentChange = (editorState) => {
-    this.setState({ editorState })
+  handleContentChange = (content) => {
+    this.setState({ content })
   }
 
   preview = () => {
@@ -139,7 +151,7 @@ export default class NewPostForm extends Component {
           </style>
         </head>
         <body>
-          <div class="container">${this.state.editorState.toHTML()}</div>
+          <div class="container">${this.state.content.toHTML()}</div>
         </body>
       </html>
     `
@@ -166,11 +178,12 @@ export default class NewPostForm extends Component {
 
   handleFileUpload = () => {  
     this.setState({
-      editorState: ContentUtils.insertHTML(this.state.editorState,"<h1>123</>",this.state.pendingUploadImage)
+      content: ContentUtils.insertHTML(this.state.content,"<h1>123</>",this.state.pendingUploadImage)
     })
   }
 
   render() {
+    const { value } = this.state;
     const controls = ['bold', 'italic', 'underline', 'text-color', 'separator', 'link', 'separator', 'media' ]
     const extendControls = [
       {
@@ -222,10 +235,11 @@ export default class NewPostForm extends Component {
                 required
                 triggerType="onBlur"
                 message="文章名称不能为空"
-                name="name"
+                name="title"
               >
                 <Input
                   placeholder="请输入文章名称"
+                  value = {value.title}
                   size="large"
                   style={{ width: '400px' }}
                 />
@@ -236,10 +250,10 @@ export default class NewPostForm extends Component {
             </div>
             <div style={styles.formItem}>
               <div style={styles.formLabel}>文章类别</div>
-              <IceFormBinder name="cate">
+              <IceFormBinder name="type">
                 <Select
                   placeholder="请选择"
-                  mode="multiple"
+                  value = {value.type}
                   size="large"
                   style={{ width: '400px' }}
                 >
@@ -254,7 +268,7 @@ export default class NewPostForm extends Component {
             </div>
             <div style={styles.formItem}>
               <div style={styles.formLabel}>封面图</div>
-              <IceFormBinder name="cover">
+              <IceFormBinder name="imageUrl">
                 <Upload.Card
                   listType="card"
                   action="//www.easy-mock.com/mock/5b960dce7db69152d06475bc/ice/upload" // 该接口仅作测试使用，业务请勿使用
@@ -263,9 +277,10 @@ export default class NewPostForm extends Component {
             </div>
             <div style={styles.formItem}>
               <div style={styles.formLabel}>文章时间</div>
-              <IceFormBinder name="time">
+              <IceFormBinder name="date">
                 <DatePicker
                   size="large"
+                  value = {value.date}
                   style={{ width: '400px' }}
                 />
               </IceFormBinder>
@@ -279,6 +294,7 @@ export default class NewPostForm extends Component {
                 name="content"
               >
                  <BraftEditor
+                  value = {value.content}
                   className="my-editor"
                   controls={controls}
                   extendControls={extendControls}

@@ -1,59 +1,69 @@
 import React, { Component } from 'react';
 import { Tab, Button } from '@alifd/next';
+import BalloonConfirm from '@icedesign/balloon-confirm';
 import { withRouter } from 'react-router-dom';
+import { getArticleByType, deleteArticle } from '../../../../api/article';
 import styles from './index.module.scss';
 
-function random(min, max) {
-  return parseInt(Math.random() * (max - min + 1) + min, 10);
-}
-
-function mockCentent() {
-  return Array.from({ length: 2 + Math.round(Math.random() * 5) }).map(() => {
-    return {
-      id: Math.random(),
-      title: ['穿搭日记', '流行指南', '美发心得', '场景搭配'][random(0, 3)],
-      cover:
-        'https://img.alicdn.com/tfs/TB1sbkkXmBYBeNjy0FeXXbnmFXa-280-498.png',
-      url: '#',
-      detail: [
-        {
-          label: '文章简要',
-          desc:
-            '分享日常的真人穿搭或专业的教程，对时尚有自己的理解，能够给消费者提供时尚搭配心得',
-        },
-      ],
-    };
-  });
-}
 
 @withRouter
 export default class PostCategory extends Component {
-  handleNewPost = (id) => {
-    this.props.history.push(`/post/new/${id}`);
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      tabs: [
+        {
+          title: '新闻',
+          icon: require('./images/post.png'),
+          key: 'news',
+        },
+        {
+          title: '活动',
+          icon: require('./images/fiy.png'),
+          key: 'activities',
+        },
+        {
+          title: '投稿',
+          icon: require('./images/video.png'),
+          key: 'contributes',
+        },
+      ],
+      currentContentType: 'news',
+      content: [],
+    };
+    this.changeTab = this.changeTab.bind(this);
+  }
+
+  componentDidMount() {
+    this.getContentByType(this.state.currentContentType);
+  }
+
+  handleUpdatePost = (id) => {
+    this.props.history.push(`/post/update/${id}`);
+  }
+
+  handleDeletePost = (id) => {
+    deleteArticle(id).then(data => {
+      this.getContentByType(this.state.currentContentType);
+    }).catch((error) => {
+      console.log(error)
+    });
+  }
+
+  changeTab = (tabName) => {
+    this.getContentByType(tabName);
+  }
+
+  getContentByType = (type) => {
+      getArticleByType(type).then(data => {
+        this.setState({currentContentType:type, content:data});
+      }).catch((error) => {
+        console.log(error)
+      })
+  }
 
   render() {
-    const tabs = [
-      {
-        title: '新闻',
-        icon: require('./images/post.png'),
-        key: 'news',
-        content: mockCentent(),
-      },
-      {
-        title: '活动',
-        icon: require('./images/fiy.png'),
-        key: 'activity',
-        content: mockCentent(),
-      },
-      {
-        title: '投稿',
-        icon: require('./images/video.png'),
-        key: 'contribute',
-        content: mockCentent(),
-      }
-    ];
-
+    const { tabs, content } = this.state;
     return (
       <div>
         <div className={styles.titleWrapper}>
@@ -69,6 +79,7 @@ export default class PostCategory extends Component {
           </span>
         </div>
         <Tab
+          onChange={this.changeTab}
           navStyle={{ backgroundColor: '#fff' }}
           contentStyle={{
             backgroundColor: '#fff',
@@ -80,7 +91,7 @@ export default class PostCategory extends Component {
             return (
               <Tab.Item
                 tabStyle={{ height: 60, padding: '0 15px' }}
-                key={tab.key}
+                key={tab.key}  
                 title={
                   <div className={styles.navItemWraper}>
                     <img
@@ -93,40 +104,24 @@ export default class PostCategory extends Component {
                 }
               >
                 <div className={styles.postCategoryList}>
-                  {tab.content.map((item, index) => {
+                  {content.map((item, index) => {
                     return (
                       <div key={index} className={styles.postCategoryItem}>
-                        <div className={styles.coverWrapper}>
-                          <img
-                            alt={item.title}
-                            style={{ width: 140, display: 'block' }}
-                            src={item.cover}
-                          />
-                        </div>
                         <div className={styles.blockDetail}>
                           <h3 className={styles.blockTitle}>{item.title}</h3>
-
-                          {item.detail.map((desc, detailIndex) => {
-                            return (
-                              <div key={detailIndex} className={styles.blockItem}>
-                                <label className={styles.blockLable}>
-                                  {desc.label}
-                                </label>
-                                <div
-                                  className={styles.blockDesc}
-                                  dangerouslySetInnerHTML={{
-                                    __html: desc.desc,
-                                  }}
-                                />
-                              </div>
-                            );
-                          })}
                           <Button
                             className={styles.blockBtn}
-                            onClick={()=>this.handleNewPost(item.id)}
-                          >
+                            onClick={()=>this.handleUpdatePost(item.id)}>
                             修改文章
                           </Button>
+                          <BalloonConfirm
+                            onConfirm={()=>this.handleDeletePost(item.id)}
+                            title="真的要删除吗亲">
+                             <Button
+                              className={styles.blockBtn}>
+                              删除文章
+                            </Button>
+                          </BalloonConfirm>
                         </div>
                       </div>
                     );
